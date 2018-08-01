@@ -1,18 +1,20 @@
-import { INCREMENT, DECREMENT } from "./Types";
+import { INCREMENT, DECREMENT, SET_RANGE } from "./Types";
 
-const increment = () => {
+export const increment = () => {
     return {
         type: INCREMENT
     }
 }
 
-const decrement = () => {
+export const decrement = () => {
     return {
         type: DECREMENT
     }
 }
 
-export {
-    increment,
-    decrement
+export const setRange = (range) => {
+    return {
+        type: SET_RANGE,
+        range
+    }
 }

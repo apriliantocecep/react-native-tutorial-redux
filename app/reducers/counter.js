@@ -1,7 +1,8 @@
-import { INCREMENT, DECREMENT } from "../actions/Types";
+import { INCREMENT, DECREMENT, SET_RANGE } from "../actions/Types";
 
 const initialState = {
-    counter: 0
+    counter: 0,
+    range: 0
 }
 
 export default counter = (state = initialState, action) => {
@@ -14,6 +15,11 @@ export default counter = (state = initialState, action) => {
         case DECREMENT:
             return Object.assign({}, state, {
                 counter: state.counter - 1
+            })
+
+        case SET_RANGE:
+            return Object.assign({}, state, {
+                range: state.range
             })
         default:
             return state

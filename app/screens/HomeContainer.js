@@ -1,16 +1,22 @@
 import { connect } from "react-redux";
 
-import { increment, decrement } from "../actions/counter";
+import { increment, decrement, setRange } from "../actions/counter";
 
 import Home from "./Home";
 
-const mapStateToProps = (state) => ({
-    counter: state.counter
-})
+const mapStateToProps = (state) => {
+    const { counter, range } = state.counterattack
+
+    return {
+        counter,
+        range
+    }
+}
 
 const mapDispatchToProps = (dispatch) => ({
-    increment: dispatch(increment()),
-    decrement: dispatch(decrement())
+    increaseCounter: () => dispatch(increment()),
+    decreaseCounter: () => dispatch(decrement()),
+    setRangeCounter: (range) => dispatch(setRange(range))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
