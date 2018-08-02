@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,6 +32,13 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: '#fff'
+    },
+    containerText: {
+        width: 100,
+        alignItems: 'center'
+    },
+    counterText: {
+        fontSize: 20,
     }
 })
 
@@ -45,58 +52,79 @@ class Home extends React.Component {
     }
 
     handleChangeText = (text) => {
-        this.setState({text})
+        // console.log(typeof parseInt(text))
+        this.props.setRangeCounter(parseInt(text || 1))
     }
 
     handlePress = () => {
-        this.props.setRangeCounter(this.state.text)
+        this.props.resetCurrentCounter()
     }
 
     render() {
-        const {counter, range, increaseCounter, decreaseCounter, setRangeCounter} = this.props;
+        const { counter, range, increaseCounter, decreaseCounter, setRangeCounter } = this.props;
 
         return (
-            <View style={styles.container}>
-    
-                <View style={styles.inputContainer}>
-                    <TextInput 
-                        style={styles.input} 
-                        placeholder="Input range number" 
-                        onChangeText={(text) => this.handleChangeText(text)}
-                    />
-                    <TouchableOpacity 
-                        style={styles.buttonTouch}
-                        onPress={this.handlePress}
-                    >
-                        <Text style={styles.buttonText}>OK</Text>
-                    </TouchableOpacity>
-                </View>
-    
-                <View style={styles.counterContainer}>
-                    <TouchableOpacity 
-                        onPress={decreaseCounter}
-                    >
-                        <Text>DECREMENT</Text>
-                    </TouchableOpacity>
-            
-                    <Text>{counter}</Text>
-            
-                    <TouchableOpacity
-                        onPress={increaseCounter}
-                    >
-                        <Text>INCREMENT</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior="padding"
+            >
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View style={styles.container}>
+                        <View style={styles.inputContainer}>
+                            <TextInput
+                                style={styles.input}
+                                keyboardType="number-pad"
+                                placeholder="Input range counter"
+                                onChangeText={(text) => this.handleChangeText(text)}
+                            />
+                            <TouchableOpacity
+                                onPress={this.handlePress}
+                            >
+                                <Text>Reset Counter</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.counterContainer}>
+                            <TouchableOpacity
+                                style={styles.buttonTouch}
+                                onPress={decreaseCounter}
+                            >
+                                <Text style={styles.buttonText}>DECREMENT</Text>
+                            </TouchableOpacity>
+
+                            <View
+                                style={styles.containerText}
+                            >
+                                <Text
+                                    style={styles.counterText}
+                                    numberOfLines={1}
+                                    ellipsizeMode="tail"
+                                >
+                                    {counter}
+                                </Text>
+                            </View>
+
+                            <TouchableOpacity
+                                style={styles.buttonTouch}
+                                onPress={increaseCounter}
+                            >
+                                <Text style={styles.buttonText}>INCREMENT</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </KeyboardAvoidingView>
         )
     }
 }
 
 Home.propTypes = {
+    range: PropTypes.number,
     counter: PropTypes.number,
     increaseCounter: PropTypes.func,
     decreaseCounter: PropTypes.func,
     setRange: PropTypes.func,
+    resetCurrentCounter: PropTypes.func
 }
 
 export default Home;
